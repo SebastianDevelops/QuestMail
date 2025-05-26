@@ -20,35 +20,15 @@ public class ChatController : ControllerBase
     }
     
     [HttpGet(Name = "pen")]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get(PostmarkInboundWebhookMessage message)
     {
         try
         {
-            var sampleMessage = new PostmarkInboundWebhookMessage
-            {
-                From = "user@example.com",
-                FromName = "John Doe",
-                FromFull = new FromFull { Email = "user@example.com", Name = "John Doe" },
-                To = "companion@medpulse.com",
-                ToFull = new List<PostmarkDotNet.ToFull> 
-                { 
-                    new() { Email = "companion@medpulse.com", Name = "Fantasy Companion" } 
-                },
-                Subject = "My wellness journey update",
-                TextBody = "Dear Companion, I managed to complete my exercise goals this week and got good sleep. What's new in Eldoria?",
-                MessageID = Guid.NewGuid(),
-                Date = DateTime.UtcNow.ToString("R"),
-                Headers = new List<Header>
-                {
-                    new() { Name = "Content-Type", Value = "text/plain" }
-                }
-            };
-            
-            if (sampleMessage == null || String.IsNullOrEmpty(sampleMessage.From))
+            if (message == null || String.IsNullOrEmpty(message.From))
             {
                 return BadRequest("Invalid request. Message cannot be null.");
             }
-            await _userService.CreateRequestContextAsync(sampleMessage);
+            await _userService.CreateRequestContextAsync(message);
             await _postmarkService.SendEmailAsync();
             
             return NoContent();
