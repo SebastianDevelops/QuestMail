@@ -58,10 +58,10 @@ public class SemanticKernelService : ISemanticKernelService
         {
             var chatHistory = await GetChatHistory();
             Console.WriteLine(("sending message to openai"));
-            var response = _chatCompletionService.GetChatMessageContentsAsync(chatHistory,
+            var response = await _chatCompletionService.GetChatMessageContentAsync(chatHistory,
                 _azureOpenAiPromptExecutionSettingsGeminiSettings, _kernel);
-Console.WriteLine("reading response from openai: "+response);
-            var mailResult = JsonSerializer.Deserialize<Email>(response.ToString());
+Console.WriteLine("reading response from openai: "+response.Content);
+            var mailResult = JsonSerializer.Deserialize<Email>(response.Content);
             Console.WriteLine("email response from openai "+ mailResult);
             return mailResult;
         }
