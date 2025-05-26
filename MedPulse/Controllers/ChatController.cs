@@ -19,8 +19,8 @@ public class ChatController : ControllerBase
         _userService = userService;
     }
     
-    [HttpGet(Name = "pen")]
-    public async Task<IActionResult> Get(PostmarkInboundWebhookMessage message)
+    [HttpPost]
+    public async Task<IActionResult> Get([FromBody] PostmarkInboundWebhookMessage message)
     {
         try
         {
@@ -28,10 +28,12 @@ public class ChatController : ControllerBase
             {
                 return BadRequest("Invalid request. Message cannot be null.");
             }
+            _logger.LogInformation("Received webhook. From: {FromEmail}, Subject: {Subject}", message.From, message.Subject);
+            
             await _userService.CreateRequestContextAsync(message);
             await _postmarkService.SendEmailAsync();
             
-            return NoContent();
+            return Ok();
         }
         catch (Exception e)
         {
