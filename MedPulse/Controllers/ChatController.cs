@@ -24,6 +24,10 @@ public class ChatController : ControllerBase
     {
         try
         {
+            if (message == null || String.IsNullOrEmpty(message.From))
+            {
+                return BadRequest("Invalid request. Message cannot be null.");
+            }
             await _userService.CreateRequestContextAsync(message);
             await _postmarkService.SendEmailAsync();
             
@@ -32,7 +36,7 @@ public class ChatController : ControllerBase
         catch (Exception e)
         {
             _logger.LogCritical("An error occurred while processing the request: {Message}", e.Message);
-            return StatusCode(500, "Internal server error. Please try again later.");
+            return StatusCode(500, $"{e.Message}");
         }
     }
 }
