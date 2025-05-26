@@ -71,23 +71,21 @@ public class UserService(IUnitOfWork unitOfWork, ISemanticKernelService semantic
             UserId = user.Id,
             Content = $@"Subject:{context.Subject}{Environment.NewLine}-----------{Environment.NewLine}{context.TextBody}",
         };
-        var chatMessageResponse = await unitOfWork.UserMessages.CreateAsync(chatMessage);
+        await unitOfWork.UserMessages.CreateAsync(chatMessage);
         if (chatMessages.Count > 0)
         {
             chatMessages[chatMessages.Count - 1] = chatMessage;
         }
         else
         {
-            chatMessages.Add(chatMessageResponse.Message!);       
+            chatMessages.Add(chatMessage);       
         }
-        Debug.Write("Successfully added chat message");
+        Console.WriteLine("Successfully added chat message");
         Context.UserId = user.Id;
         Context.ToEmail = user.Email;
         Context.CompanionId = companion.Id;
         Context.Username = user.Name;
         Context.UserMessages = chatMessages;
         Context.CompanionName = companion.Name;
-        
-        
     }
 }
