@@ -11,12 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("./etc/secrets/appsettings.json", optional: true, reloadOnChange: true)
-    .AddJsonFile(Path.Combine(AppContext.BaseDirectory.TrimStart('/'), "appsettings.json"), optional: true, reloadOnChange: true)
+    .AddJsonFile(Path.Combine((AppContext.BaseDirectory.StartsWith("/") ? AppContext.BaseDirectory.Substring(1) : AppContext.BaseDirectory), "appsettings.json"), optional: true, reloadOnChange: true)
     .AddJsonFile($"./etc/secrets/appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
     .AddEnvironmentVariables();
 // Add services to the container.
-Console.WriteLine("The base directory is: " + AppContext.BaseDirectory.TrimStart('/'));
-// Register Settings as a singleton
+Console.WriteLine("The base directory is: " + (AppContext.BaseDirectory.StartsWith("/") ? AppContext.BaseDirectory.Substring(1) : AppContext.BaseDirectory));// Register Settings as a singleton
 builder.Services.Configure<Settings>(builder.Configuration.GetSection("Settings"));
 builder.Services.AddSingleton(sp =>
     sp.GetRequiredService<IOptions<Settings>>().Value);
