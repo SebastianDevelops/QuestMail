@@ -2,10 +2,10 @@
 
 public class Settings
 {
-    public AzureOpenAI AzureOpenAI { get; }
-    public GoogleGemini GoogleGemini { get; }
-    public Pinata Pinata { get; }
-    public Postmark Postmark { get; }
+    public AzureOpenAI AzureOpenAI { get; set; } = null!;
+    public GoogleGemini GoogleGemini { get; set; } = null!;
+    public Pinata Pinata { get; set; } = null!;
+    public Postmark Postmark { get; set; } = null!;
 }
 
 public class AzureOpenAI

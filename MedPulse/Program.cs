@@ -5,16 +5,20 @@ using MedPulse.Repositories;
 using MedPulse.Repositories.Interfaces;
 using MedPulse.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
-    .AddJsonFile(Path.Combine(AppContext.BaseDirectory, "appsettings.json"), optional: true, reloadOnChange: true)
-    .AddJsonFile(Path.Combine(AppContext.BaseDirectory, $"appsettings.{builder.Environment.EnvironmentName}.json"), optional: true)
+    .AddJsonFile("./etc/secrets/appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"./etc/secrets/appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
     .AddEnvironmentVariables();
 // Add services to the container.
+
+// Register Settings as a singleton
+builder.Services.Configure<Settings>(builder.Configuration.GetSection("Settings"));
+builder.Services.AddSingleton(sp =>
+    sp.GetRequiredService<IOptions<Settings>>().Value);
 
 builder.Services.Configure<AzureOpenAI>(
     builder.Configuration.GetSection("Settings"));

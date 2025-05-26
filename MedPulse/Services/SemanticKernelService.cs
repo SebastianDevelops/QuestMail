@@ -19,17 +19,17 @@ namespace MedPulse.Services;
 public class SemanticKernelService : ISemanticKernelService
 {
     public readonly Kernel _kernel;
-    private readonly AzureOpenAI _settings;
+    private readonly Settings _settings;
     private readonly IChatCompletionService _chatCompletionService;
     private readonly AzureOpenAIPromptExecutionSettings _azureOpenAiPromptExecutionSettingsGeminiSettings;
     private readonly IServiceProvider _serviceProvider;
 
-    public SemanticKernelService(IOptions<AzureOpenAI> options, IServiceProvider serviceProvider)
+    public SemanticKernelService(Settings settings, IServiceProvider serviceProvider)
     {
-        _settings = options.Value;
+        _settings = settings;
         _serviceProvider = serviceProvider;
-        var credentials = new AzureOpenAIClient(new Uri(_settings.Endpoint), new AzureKeyCredential(_settings.Apikey));
-        var azureOpenAiChatService =  new AzureOpenAIChatCompletionService(_settings.Model, credentials);
+        var credentials = new AzureOpenAIClient(new Uri(_settings.AzureOpenAI.Endpoint), new AzureKeyCredential(_settings.AzureOpenAI.Apikey));
+        var azureOpenAiChatService =  new AzureOpenAIChatCompletionService(_settings.AzureOpenAI.Model, credentials);
         var builder = Kernel.CreateBuilder();
         builder.Services.AddSingleton(_serviceProvider);
         _kernel = builder.Build();
