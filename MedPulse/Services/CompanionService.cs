@@ -23,7 +23,7 @@ public class CompanionService : ICompanionService
     public async Task<string> GetOrSetCompanionImageUrlResponseAsync()
     {
         var companion = await _unitOfWork.Companions.GetByIdAsync(Context.CompanionId);
-        
+        Console.WriteLine("companion image url: "+ companion.ImageUrl);
         if (String.IsNullOrEmpty(companion.ImageUrl))
         {
             var imageUrl = await UploadImageToPinataAsync();

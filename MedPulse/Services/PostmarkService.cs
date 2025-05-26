@@ -31,6 +31,7 @@ public class PostmarkService(Settings settings, ISemanticKernelService semanticK
     private async Task<PostmarkMessage> FormatEmailAsync()
     {
         var email = await semanticKernelService.GetResponseAsync();
+        Console.WriteLine("Calling image url creator");
         var companionImageUrl = await companionService.GetOrSetCompanionImageUrlResponseAsync();
         
         PostmarkMessage message = new PostmarkMessage();
