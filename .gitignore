@@ -5,3 +5,6 @@ node_modules
 /generated/prisma
 /prisma
 /MedPulse/appsettings.Development.json
+/MedPulse/Migrations
+/MedPulse/obj
+/MedPulse/bin
