@@ -55,12 +55,12 @@ public class SemanticKernelService : ISemanticKernelService
     public async Task<Email?> GetResponseAsync()
     {
         var chatHistory = await GetChatHistory();
-
+Console.WriteLine(("sending message to openai"));
         var response = _chatCompletionService.GetChatMessageContentsAsync(chatHistory,
             _azureOpenAiPromptExecutionSettingsGeminiSettings, _kernel);
 
         var mailResult = JsonSerializer.Deserialize<Email>(response.ToString());
-        
+        Console.WriteLine("email response from openai "+ mailResult);
         return mailResult;
     }
     
@@ -81,7 +81,7 @@ public class SemanticKernelService : ISemanticKernelService
                 userChats.AddAssistantMessage(response.Content!);
             }
         }
-
+Console.WriteLine("Returning user chat history");
         return userChats;
     }
 
