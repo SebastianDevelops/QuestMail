@@ -39,7 +39,7 @@ if (builder.Environment.IsDevelopment())
     Environment.SetEnvironmentVariable("Settings.Postmark.fromEmail", builder.Configuration["Settings:Postmark:fromEmail"]);
     Environment.SetEnvironmentVariable("Settings.Postmark.replyTo", builder.Configuration["Settings:Postmark:replyTo"]);
     
-    Environment.SetEnvironmentVariable("DefaultConnection", builder.Configuration.GetConnectionString("DefaultConnection"));
+    Environment.SetEnvironmentVariable("DefaultConnection", builder.Configuration.GetConnectionString("ConnectionStrings:DefaultConnection"));
 }
 
 
@@ -48,7 +48,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<QuestMailContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString(Environment.GetEnvironmentVariable("DefaultConnection"))));
+    options.UseNpgsql(Environment.GetEnvironmentVariable("DefaultConnection")));
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
