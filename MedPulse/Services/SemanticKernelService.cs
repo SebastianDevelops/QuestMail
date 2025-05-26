@@ -26,6 +26,8 @@ public class SemanticKernelService : ISemanticKernelService
 
     public SemanticKernelService(Settings settings, IServiceProvider serviceProvider)
     {
+        var test = Environment.GetEnvironmentVariable("Settings.AzureOpenAI.endpoint");
+        Console.WriteLine("Checking endpoint: " + test);
         _settings = settings;
         _serviceProvider = serviceProvider;
         var credentials = new AzureOpenAIClient(new Uri(_settings.AzureOpenAI.Endpoint), new AzureKeyCredential(_settings.AzureOpenAI.Apikey));
