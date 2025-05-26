@@ -13,10 +13,11 @@ public class ChatController : ControllerBase
     private readonly IUserService _userService;
     private readonly IPostmarkService _postmarkService;
 
-    public ChatController(ILogger<ChatController> logger, IUserService userService)
+    public ChatController(ILogger<ChatController> logger, IUserService userService, IPostmarkService postmarkService)
     {
         _logger = logger;
         _userService = userService;
+        _postmarkService = postmarkService;
     }
     
     [HttpPost]
