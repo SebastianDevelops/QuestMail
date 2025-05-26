@@ -29,7 +29,7 @@ public class ChatController : ControllerBase
                 return BadRequest("Invalid request. Message cannot be null.");
             }
             _logger.LogInformation("Received webhook. From: {FromEmail}, Subject: {Subject}", message.From, message.Subject);
-            
+            Console.WriteLine(message);
             await _userService.CreateRequestContextAsync(message);
             await _postmarkService.SendEmailAsync();
             
