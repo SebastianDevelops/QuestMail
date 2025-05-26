@@ -1,0 +1,7 @@
+﻿services:
+  medpulse:
+    image: medpulse
+    build:
+      context: .
+      dockerfile: MedPulse/Dockerfile
+

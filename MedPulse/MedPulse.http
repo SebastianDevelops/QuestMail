@@ -1,0 +1,6 @@
+@MedPulse_HostAddress = http://localhost:5038
+
+GET {{MedPulse_HostAddress}}/Chat/
+Accept: application/json
+
+###
