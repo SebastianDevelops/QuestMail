@@ -12,7 +12,7 @@ public class PostmarkService(Settings settings, ISemanticKernelService semanticK
     public async Task SendEmailAsync()
     {
         var client = new PostmarkClient(Environment.GetEnvironmentVariable("Settings.Postmark.apikey"));
-
+        Console.WriteLine("Successfully created Postmark client with API key.");
         try
         {
             var email = await FormatEmailAsync();

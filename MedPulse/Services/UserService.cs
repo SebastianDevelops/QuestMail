@@ -87,5 +87,6 @@ public class UserService(IUnitOfWork unitOfWork, ISemanticKernelService semantic
         Context.Username = user.Name;
         Context.UserMessages = chatMessages;
         Context.CompanionName = companion.Name;
+        Console.WriteLine("Successfully created request context");
     }
 }

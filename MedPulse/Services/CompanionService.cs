@@ -27,6 +27,7 @@ public class CompanionService : ICompanionService
         if (String.IsNullOrEmpty(companion.ImageUrl))
         {
             var imageUrl = await UploadImageToPinataAsync();
+            Console.WriteLine("Image URL generated: " + imageUrl);
             companion.ImageUrl = imageUrl;
             await _unitOfWork.Companions.UpdateAsync(companion);
             return imageUrl;
@@ -37,16 +38,22 @@ public class CompanionService : ICompanionService
     
     private async Task<string> UploadImageToPinataAsync()
     {
-        
+        Console.WriteLine("Starting image generation...");
         var googleAi = new GoogleAi( Environment.GetEnvironmentVariable("Settings.GoogleGemini.apikey"));
+        Console.WriteLine("Google AI initialized.");
         var imageModel = googleAi.CreateImageModel(Environment.GetEnvironmentVariable("Settings.GoogleGemini.model"));
+        Console.WriteLine("Image model created.");
         var response = await imageModel.GenerateImagesAsync(Constants.ImageGenPrompt);
+        Console.WriteLine("Image generation completed.");
         var image = response?.Predictions?.FirstOrDefault();
+        Console.WriteLine("Image retrieved from response.");
         var imageBytes = image?.BytesBase64Encoded;
+        Console.WriteLine("Image bytes retrieved.");
         
         using (var ms = new MemoryStream(Convert.FromBase64String(imageBytes)))
         {
             var pinataResponse = await _pinataClient.UploadFileAsync(ms, $"{Context.CompanionName}.png");
+            Console.WriteLine("Image uploaded to Pinata.");
             Task.Delay(2500).Wait();
             return $"{Environment.GetEnvironmentVariable("Settings.Pinata.BaseUrl")}{pinataResponse.Data.Cid}";
         }
