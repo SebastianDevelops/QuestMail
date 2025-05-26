@@ -1,4 +1,5 @@
-﻿using MedPulse.Models;
+﻿using System.Diagnostics;
+using MedPulse.Models;
 using MedPulse.Repositories;
 using MedPulse.ViewModel;
 using PostmarkDotNet.Webhooks;
@@ -79,6 +80,7 @@ public class UserService(IUnitOfWork unitOfWork, ISemanticKernelService semantic
         {
             chatMessages.Add(chatMessageResponse.Message!);       
         }
+        Debug.Write("Successfully added chat message");
         Context.UserId = user.Id;
         Context.ToEmail = user.Email;
         Context.CompanionId = companion.Id;
@@ -86,6 +88,6 @@ public class UserService(IUnitOfWork unitOfWork, ISemanticKernelService semantic
         Context.UserMessages = chatMessages;
         Context.CompanionName = companion.Name;
         
-        var response = await semanticKernelService.GetResponseAsync();
+        
     }
 }
