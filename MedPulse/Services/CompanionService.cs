@@ -16,7 +16,7 @@ public class CompanionService : ICompanionService
     public CompanionService(Settings settings, IUnitOfWork unitOfWork)
     {
         _settings = settings;
-        _pinataClient = new PinataClient(_settings.Pinata.JWT);
+        _pinataClient = new PinataClient( Environment.GetEnvironmentVariable("Settings.Pinata.JWT"));
         _unitOfWork = unitOfWork;
     }
 
@@ -38,8 +38,8 @@ public class CompanionService : ICompanionService
     private async Task<string> UploadImageToPinataAsync()
     {
         
-        var googleAi = new GoogleAi(_settings.GoogleGemini.Apikey);
-        var imageModel = googleAi.CreateImageModel(_settings.GoogleGemini.Model);
+        var googleAi = new GoogleAi( Environment.GetEnvironmentVariable("Settings.GoogleGemini.apikey"));
+        var imageModel = googleAi.CreateImageModel(Environment.GetEnvironmentVariable("Settings.GoogleGemini.model"));
         var response = await imageModel.GenerateImagesAsync(Constants.ImageGenPrompt);
         var image = response?.Predictions?.FirstOrDefault();
         var imageBytes = image?.BytesBase64Encoded;
@@ -48,7 +48,7 @@ public class CompanionService : ICompanionService
         {
             var pinataResponse = await _pinataClient.UploadFileAsync(ms, $"{Context.CompanionName}.png");
             Task.Delay(2500).Wait();
-            return $"{_settings.Pinata.BaseUrl}{pinataResponse.Data.Cid}";
+            return $"{Environment.GetEnvironmentVariable("Settings.Pinata.BaseUrl")}{pinataResponse.Data.Cid}";
         }
     }
 }

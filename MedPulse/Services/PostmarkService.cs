@@ -11,7 +11,7 @@ public class PostmarkService(Settings settings, ISemanticKernelService semanticK
 {
     public async Task SendEmailAsync()
     {
-        var client = new PostmarkClient(settings.Postmark.ApiKey);
+        var client = new PostmarkClient(Environment.GetEnvironmentVariable("Settings.Postmark.apikey"));
 
         try
         {
@@ -34,8 +34,8 @@ public class PostmarkService(Settings settings, ISemanticKernelService semanticK
         var companionImageUrl = await companionService.GetOrSetCompanionImageUrlResponseAsync();
         
         PostmarkMessage message = new PostmarkMessage();
-        message.From = $"{Context.CompanionName} <{settings.Postmark.FromEmail}>";
-        message.ReplyTo = $"{settings.Postmark.ReplyTo}";
+        message.From = $"{Context.CompanionName} <{Environment.GetEnvironmentVariable("Settings.Postmark.fromEmail")}>";
+        message.ReplyTo = $"{Environment.GetEnvironmentVariable("Settings.Postmark.replyTo")}";
         message.To = $"{Context.ToEmail}";
         message.Subject = email?.Subject;
         message.HtmlBody = $"{PrepareEmailBody(email, companionImageUrl)}";

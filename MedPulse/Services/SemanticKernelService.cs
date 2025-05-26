@@ -28,9 +28,8 @@ public class SemanticKernelService : ISemanticKernelService
     {
         _settings = settings;
         _serviceProvider = serviceProvider;
-        Console.WriteLine("Checking endpoint: " + _settings.AzureOpenAI.Endpoint);
-        var credentials = new AzureOpenAIClient(new Uri(_settings.AzureOpenAI.Endpoint), new AzureKeyCredential(_settings.AzureOpenAI.Apikey));
-        var azureOpenAiChatService =  new AzureOpenAIChatCompletionService(_settings.AzureOpenAI.Model, credentials);
+        var credentials = new AzureOpenAIClient(new Uri(Environment.GetEnvironmentVariable("Settings.AzureOpenAI.endpoint")), new AzureKeyCredential(Environment.GetEnvironmentVariable("Settings.AzureOpenAI.apikey")));
+        var azureOpenAiChatService =  new AzureOpenAIChatCompletionService(Environment.GetEnvironmentVariable("Settings.AzureOpenAI.model"), credentials);
         var builder = Kernel.CreateBuilder();
         builder.Services.AddSingleton(_serviceProvider);
         _kernel = builder.Build();

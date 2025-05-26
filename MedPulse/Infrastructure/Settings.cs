@@ -2,10 +2,10 @@
 
 public class Settings
 {
-    public AzureOpenAI AzureOpenAI { get; set; } = new();
-    public GoogleGemini GoogleGemini { get; set; } = new();
-    public Pinata Pinata { get; set; } = new();
-    public Postmark Postmark { get; set; } = new();
+    public AzureOpenAI AzureOpenAI { get; set; } = null!;
+    public GoogleGemini GoogleGemini { get; set; } = null!;
+    public Pinata Pinata { get; set; } = null!;
+    public Postmark Postmark { get; set; } = null!;
 }
 
 public class AzureOpenAI
@@ -23,7 +23,7 @@ public class GoogleGemini
 
 public class Pinata
 {
-    public string JWT { get; set; } =Environment.GetEnvironmentVariable("Settings.Pinata.JWT") ?? string.Empty;
+    public string JWT { get; set; } = Environment.GetEnvironmentVariable("Settings.Pinata.JWT") ?? string.Empty;
     public string BaseUrl { get; set; } = Environment.GetEnvironmentVariable("Settings.Pinata.BaseUrl") ?? string.Empty;
 }
 
