@@ -22,7 +22,7 @@ Eldoria is a realm of breathtaking beauty, ancient magic, and hidden perils, now
 ## 🚀 Key Features
 
 * **📧 Email-Based Interaction:** Core gameplay loop driven by sending and receiving emails, processed via Postmark webhooks. No separate app needed!
-* **🤖 AI-Powered Companion System:** Intelligent and dynamic fantasy companions crafted with Azure OpenAI (GPT-4.1) and Google Gemini, providing unique personalities and narrative generation.
+* **🤖 AI-Powered Companion System:** Intelligent and dynamic fantasy companions crafted with Google Gemini, providing unique personalities and narrative generation.
 * **🎨 Fantasy Character Image Generation:** Visualize your unique companion with AI-generated avatars, potentially stored via Pinata on IPFS.
 * **💾 User Message Tracking & Persistence:** Your journey and interactions are remembered, allowing for a continuous and evolving narrative.
 * **🏆 Trophy and Quest System:** Engage in various "Restoration Quests" and earn thematic trophies for achieving your health and wellness goals.
@@ -33,7 +33,6 @@ Eldoria is a realm of breathtaking beauty, ancient magic, and hidden perils, now
 * **Backend:** .NET 8.0
 * **Data Access:** Entity Framework Core with PostgreSQL
 * **AI & LLMs:**
-    * Azure OpenAI (GPT-4.1)
     * Google Gemini
 * **Email Processing:** Postmark (Inbound Webhooks are central!)
 * **Decentralized File Storage:** Pinata (for potential storage of generated character avatars on IPFS)
