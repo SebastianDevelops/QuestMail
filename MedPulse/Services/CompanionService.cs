@@ -20,7 +20,20 @@ public class CompanionService : ICompanionService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<string> GetOrSetCompanionImageUrlResponseAsync()
+
+    public async Task<string> GetCompanionImageBase64()
+    {
+        var imageUrl = await GetOrSetCompanionImageUrlResponseAsync();
+        
+        using (var httpClient = new HttpClient())
+        {
+            var imageBytes = await httpClient.GetByteArrayAsync(imageUrl);
+            return Convert.ToBase64String(imageBytes);
+        }
+    }
+
+    
+    private async Task<string> GetOrSetCompanionImageUrlResponseAsync()
     {
         var companion = await _unitOfWork.Companions.GetByIdAsync(Context.CompanionId);
         Console.WriteLine("companion image url: "+ companion.ImageUrl);

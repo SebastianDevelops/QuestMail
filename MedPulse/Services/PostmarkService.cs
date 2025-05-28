@@ -18,7 +18,7 @@ public class PostmarkService(Settings settings, ISemanticKernelService semanticK
             var email = await FormatEmailAsync();
             var sendResult = await client.SendMessageAsync(email);
 
-            if (sendResult.Status == PostmarkStatus.Success){ Debug.WriteLine($"Successfully sent email to {email.To}"); }
+            if (sendResult.Status == PostmarkStatus.Success){ Console.WriteLine($"Successfully sent email to {email.To}"); }
             else { 
                 Debug.WriteLine($"Failed to send email to {email.To}. Error: {sendResult.Message}");
                 throw new Exception($"Postmark API error: {sendResult.Message}");
@@ -31,21 +31,27 @@ public class PostmarkService(Settings settings, ISemanticKernelService semanticK
     private async Task<PostmarkMessage> FormatEmailAsync()
     {
         var email = await semanticKernelService.GetResponseAsync();
+        var cid = $"{Guid.NewGuid()}:{Context.CompanionName}";
         Console.WriteLine("Calling image url creator");
-        var companionImageUrl = await companionService.GetOrSetCompanionImageUrlResponseAsync();
         
         PostmarkMessage message = new PostmarkMessage();
         message.From = $"{Context.CompanionName} <{Environment.GetEnvironmentVariable("Settings.Postmark.fromEmail")}>";
         message.ReplyTo = $"{Environment.GetEnvironmentVariable("Settings.Postmark.replyTo")}";
         message.To = $"{Context.ToEmail}";
         message.Subject = email?.Subject;
-        message.HtmlBody = $"{PrepareEmailBody(email, companionImageUrl)}";
+        message.HtmlBody = $"{PrepareEmailBody(email, cid)}";
         message.MessageStream = "outbound";
+        PostmarkMessageAttachment attachment = new PostmarkMessageAttachment();
+        attachment.Name = Context.CompanionName;
+        attachment.ContentType = "image/png";
+        attachment.ContentId = cid;
+        attachment.Content = await companionService.GetCompanionImageBase64();
+        message.Attachments.Add(attachment);
 
         return message;
     }
     
-    private string PrepareEmailBody(Email? email, string companionImageUrl)
+    private string PrepareEmailBody(Email? email, string cid)
     {
         return $@"<!DOCTYPE html>
 <html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"" xmlns:v=""urn:schemas-microsoft-com:vml"" xmlns:o=""urn:schemas-microsoft-com:office:office"">
@@ -228,7 +234,7 @@ public class PostmarkService(Settings settings, ISemanticKernelService semanticK
                     <table role=""presentation"" cellspacing=""0"" cellpadding=""0"" border=""0"" width=""100%"">
                         <tr>
                             <td width=""80"" valign=""top"" style=""padding-right: 15px; width: 80px;"" class=""avatar-column"">
-                                <img src=""{companionImageUrl}"" alt=""Innkeeper"" width=""60"" height=""60"" style=""border-radius: 50%; margin-bottom: 10px; border: 2px solid #e0ac69; display: block;"">
+                                <img src=""{cid}"" alt=""Innkeeper"" width=""60"" height=""60"" style=""border-radius: 50%; margin-bottom: 10px; border: 2px solid #e0ac69; display: block;"">
                                 <p class=""font-cinzel-email innkeeper-name"" style=""color: #e0ac69; font-size: 18px; line-height: 1.2; margin: 0; font-weight: bold; word-break: break-word;"">
                                     {Context.CompanionName}
                                 </p>

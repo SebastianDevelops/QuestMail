@@ -2,5 +2,5 @@
 
 public interface ICompanionService
 {
-    public Task<string> GetOrSetCompanionImageUrlResponseAsync();
+    public Task<string> GetCompanionImageBase64();
 }
