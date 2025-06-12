@@ -1,4 +1,4 @@
-﻿# ⚔️ Eldoria Chronicles: An Epistolary Health Quest 📜
+﻿# ⚔Eldoria Chronicles: An Epistolary Health Quest
 
 **Embark on a unique health and wellness journey where your email inbox becomes a portal to the enchanting realm of Eldoria! Receive missives from your fantasy companion, make choices that shape your RPG narrative, and translate real-world healthy habits into epic progress.**
 
